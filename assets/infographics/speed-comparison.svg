@@ -1,0 +1,46 @@
+<svg viewBox="0 0 940 520" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect width="940" height="520" rx="14" fill="#0d1321"/>
+  <text x="40" y="48" fill="#f1faee" font-size="26" font-weight="bold">TOP SPEED — public estimates (Mach)</text>
+  <text x="40" y="72" fill="#8d99ae" font-size="14">Glide/terminal speeds where applicable · sources: Wikipedia / CSIS Missile Threat</text>
+
+  <!-- Mach 5 hypersonic threshold: x = 210 + 5*650/27 = 330 -->
+  <line x1="330" y1="92" x2="330" y2="460" stroke="#e9c46a" stroke-dasharray="5 5" stroke-width="1.5"/>
+  <text x="336" y="104" fill="#e9c46a" font-size="12" font-weight="bold">Mach 5 — hypersonic threshold</text>
+
+  <!-- bars: x=210, scale 650px = Mach 27 -->
+  <g font-size="15">
+    <text x="200" y="146" fill="#f1faee" text-anchor="end">🇷🇺 Avangard (glide)</text>
+    <rect x="210" y="130" width="650" height="24" rx="5" fill="#e63946"/>
+    <text x="852" y="146" fill="#0d1321" text-anchor="end" font-weight="bold">Mach ~27</text>
+
+    <text x="200" y="188" fill="#f1faee" text-anchor="end">🇺🇸 Trident II (re-entry)</text>
+    <rect x="210" y="172" width="578" height="24" rx="5" fill="#457b9d"/>
+    <text x="780" y="188" fill="#0d1321" text-anchor="end" font-weight="bold">Mach ~24</text>
+
+    <text x="200" y="230" fill="#f1faee" text-anchor="end">🇷🇺 Kinzhal</text>
+    <rect x="210" y="214" width="241" height="24" rx="5" fill="#e63946"/>
+    <text x="461" y="230" fill="#f1faee" font-weight="bold">Mach ~10 (claimed)</text>
+
+    <text x="200" y="272" fill="#f1faee" text-anchor="end">🇷🇺 Zircon</text>
+    <rect x="210" y="256" width="217" height="24" rx="5" fill="#e63946"/>
+    <text x="437" y="272" fill="#f1faee" font-weight="bold">Mach ~9</text>
+
+    <text x="200" y="314" fill="#f1faee" text-anchor="end">🇨🇳 DF-17 (glide)</text>
+    <rect x="210" y="298" width="193" height="24" rx="5" fill="#f4a261"/>
+    <text x="413" y="314" fill="#f1faee" font-weight="bold">Mach 5–10</text>
+
+    <text x="200" y="356" fill="#f1faee" text-anchor="end">🇺🇸 LRHW Dark Eagle</text>
+    <rect x="210" y="340" width="144" height="24" rx="5" fill="#457b9d"/>
+    <text x="364" y="356" fill="#f1faee" font-weight="bold">Mach 5+</text>
+
+    <text x="200" y="398" fill="#f1faee" text-anchor="end">🇮🇳🇷🇺 BrahMos</text>
+    <rect x="210" y="382" width="72" height="24" rx="5" fill="#2a9d8f"/>
+    <text x="292" y="398" fill="#f1faee" font-weight="bold">Mach ~3</text>
+
+    <text x="200" y="440" fill="#f1faee" text-anchor="end">🇺🇸 Tomahawk</text>
+    <rect x="210" y="424" width="18" height="24" rx="5" fill="#457b9d"/>
+    <text x="238" y="440" fill="#f1faee" font-weight="bold">Mach ~0.74 — slow, but 2,300+ combat launches</text>
+  </g>
+
+  <text x="40" y="492" fill="#8d99ae" font-size="13">Note: raw speed ≠ capability — ballistic re-entry is fast but predictable; hypersonic gliders are slower than ICBM warheads but maneuver, which is what defeats defenses.</text>
+</svg>

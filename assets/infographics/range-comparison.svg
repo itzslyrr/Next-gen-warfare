@@ -1,0 +1,61 @@
+<svg viewBox="0 0 940 560" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect width="940" height="560" rx="14" fill="#0d1321"/>
+  <text x="40" y="48" fill="#f1faee" font-size="26" font-weight="bold">MAXIMUM RANGE — public estimates (km)</text>
+  <text x="40" y="72" fill="#8d99ae" font-size="14">Next-Gen Warfare Knowledge Base · sources: Wikipedia / CSIS Missile Threat</text>
+
+  <!-- ICBM threshold line: 5,500 km -->
+  <line x1="409" y1="92" x2="409" y2="500" stroke="#8d99ae" stroke-dasharray="5 5" stroke-width="1"/>
+  <text x="415" y="104" fill="#8d99ae" font-size="12">ICBM threshold (5,500 km)</text>
+
+  <!-- bars: x=210, scale 650px = 18,000 km -->
+  <g font-size="15">
+    <text x="200" y="136" fill="#f1faee" text-anchor="end">🇷🇺 RS-28 Sarmat</text>
+    <rect x="210" y="120" width="650" height="24" rx="5" fill="#e63946"/>
+    <text x="852" y="136" fill="#0d1321" text-anchor="end" font-weight="bold">~18,000</text>
+
+    <text x="200" y="174" fill="#f1faee" text-anchor="end">🇰🇵 Hwasong-18</text>
+    <rect x="210" y="158" width="542" height="24" rx="5" fill="#9d4edd"/>
+    <text x="744" y="174" fill="#0d1321" text-anchor="end" font-weight="bold">~15,000</text>
+
+    <text x="200" y="212" fill="#f1faee" text-anchor="end">🇨🇳 DF-41</text>
+    <rect x="210" y="196" width="488" height="24" rx="5" fill="#f4a261"/>
+    <text x="690" y="212" fill="#0d1321" text-anchor="end" font-weight="bold">~13,500</text>
+
+    <text x="200" y="250" fill="#f1faee" text-anchor="end">🇺🇸 Minuteman III</text>
+    <rect x="210" y="234" width="469" height="24" rx="5" fill="#457b9d"/>
+    <text x="671" y="250" fill="#0d1321" text-anchor="end" font-weight="bold">~13,000</text>
+
+    <text x="200" y="288" fill="#f1faee" text-anchor="end">🇺🇸 Trident II D5</text>
+    <rect x="210" y="272" width="433" height="24" rx="5" fill="#457b9d"/>
+    <text x="635" y="288" fill="#0d1321" text-anchor="end" font-weight="bold">~12,000</text>
+
+    <text x="200" y="326" fill="#f1faee" text-anchor="end">🇮🇳 Agni-V</text>
+    <rect x="210" y="310" width="235" height="24" rx="5" fill="#2a9d8f"/>
+    <text x="455" y="326" fill="#f1faee" font-weight="bold">5,000–8,000</text>
+
+    <text x="200" y="364" fill="#f1faee" text-anchor="end">🇺🇸 LRHW Dark Eagle</text>
+    <rect x="210" y="348" width="100" height="24" rx="5" fill="#457b9d"/>
+    <text x="320" y="364" fill="#f1faee" font-weight="bold">~2,775</text>
+
+    <text x="200" y="402" fill="#f1faee" text-anchor="end">🇨🇳 DF-17</text>
+    <rect x="210" y="386" width="79" height="24" rx="5" fill="#f4a261"/>
+    <text x="299" y="402" fill="#f1faee" font-weight="bold">~2,200</text>
+
+    <text x="200" y="440" fill="#f1faee" text-anchor="end">🇺🇸 Tomahawk V</text>
+    <rect x="210" y="424" width="58" height="24" rx="5" fill="#457b9d"/>
+    <text x="278" y="440" fill="#f1faee" font-weight="bold">~1,600</text>
+
+    <text x="200" y="478" fill="#f1faee" text-anchor="end">🇮🇳🇷🇺 BrahMos (ext.)</text>
+    <rect x="210" y="462" width="29" height="24" rx="5" fill="#2a9d8f"/>
+    <text x="249" y="478" fill="#f1faee" font-weight="bold">~800</text>
+  </g>
+
+  <!-- legend -->
+  <g font-size="13" fill="#f1faee">
+    <rect x="40" y="520" width="14" height="14" rx="3" fill="#e63946"/><text x="60" y="532">Russia</text>
+    <rect x="130" y="520" width="14" height="14" rx="3" fill="#457b9d"/><text x="150" y="532">USA</text>
+    <rect x="205" y="520" width="14" height="14" rx="3" fill="#f4a261"/><text x="225" y="532">China</text>
+    <rect x="290" y="520" width="14" height="14" rx="3" fill="#2a9d8f"/><text x="310" y="532">India</text>
+    <rect x="365" y="520" width="14" height="14" rx="3" fill="#9d4edd"/><text x="385" y="532">North Korea</text>
+  </g>
+</svg>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Next-Gen Warfare — An AI-Built Knowledge Base</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root {
+    --color-primary: #e63946;
+    --color-accent: #e9c46a;
+    --color-background: #0d1321;
+    --color-surface: #1b2436;
+    --color-text: #f1faee;
+    --color-muted: #8d99ae;
+    --gradient-primary: linear-gradient(135deg, #e63946, #e9c46a);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    background: #060a14;
+    color: var(--color-text);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    overflow: hidden;
+}
+.slide-deck { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+@media (min-width: 769px) {
+    .slide-deck {
+        max-width: calc(100vh * 16 / 9);
+        max-height: calc(100vw * 9 / 16);
+        margin: auto; position: absolute; inset: 0;
+    }
+}
+.slide {
+    position: absolute; width: 100%; height: 100%;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; padding: 60px;
+    opacity: 0; visibility: hidden; transition: opacity 0.4s;
+    background: var(--color-background); overflow: hidden;
+}
+.slide.active { opacity: 1; visibility: visible; }
+.slide-content {
+    width: 100%; max-width: 100%; max-height: 100%; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 18px;
+}
+.slide-title {
+    font-size: clamp(32px, 6vw, 76px);
+    background: var(--gradient-primary);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.1; font-weight: 800; letter-spacing: -1px;
+}
+h2 { font-size: clamp(24px, 4vw, 44px); font-weight: 800; letter-spacing: -0.5px; }
+h2 .hl { color: var(--color-accent); }
+p.sub { color: var(--color-muted); font-size: clamp(14px, 1.8vw, 20px); max-width: 820px; }
+.kicker {
+    text-transform: uppercase; letter-spacing: 4px; font-size: 13px;
+    color: var(--color-primary); font-weight: 700;
+}
+
+/* metric cards */
+.metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; width: 100%; max-width: 980px; }
+.metric {
+    background: var(--color-surface); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px; padding: 26px 12px;
+}
+.metric .num {
+    font-size: clamp(30px, 4.5vw, 54px); font-weight: 800;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.metric .lbl { color: var(--color-muted); font-size: 14px; margin-top: 6px; }
+
+/* two column */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; width: 100%; max-width: 1020px; text-align: left; }
+.panel {
+    background: var(--color-surface); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px; padding: 24px;
+}
+.panel h3 { font-size: 18px; margin-bottom: 12px; color: var(--color-accent); }
+pre.tree, pre.term {
+    text-align: left; font-family: "SF Mono", Menlo, monospace;
+    font-size: clamp(10px, 1.25vw, 14.5px); line-height: 1.55;
+    background: #0a0f1c; border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px; padding: 20px 24px; overflow: hidden;
+}
+pre.tree .dir { color: var(--color-accent); }
+pre.tree .comment { color: var(--color-muted); }
+pre.term .prompt { color: #2a9d8f; }
+pre.term .said { color: var(--color-text); }
+pre.term .comment { color: var(--color-muted); }
+
+/* comparison table */
+table.vs { border-collapse: collapse; width: 100%; max-width: 960px; font-size: clamp(12px, 1.5vw, 17px); }
+table.vs th, table.vs td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); text-align: left; }
+table.vs th { color: var(--color-accent); text-transform: uppercase; font-size: 12.5px; letter-spacing: 2px; }
+table.vs td.win { color: #2a9d8f; font-weight: 700; }
+table.vs td.lose { color: var(--color-muted); }
+
+/* checklist */
+ul.checks { text-align: left; font-size: clamp(14px, 1.9vw, 21px); line-height: 2.0; list-style: none; max-width: 860px; }
+ul.checks li::before { content: "✓  "; color: #2a9d8f; font-weight: 800; }
+ul.checks li b { color: var(--color-accent); }
+
+.infographic { max-width: min(88%, 860px); max-height: 62vh; border-radius: 14px; box-shadow: 0 18px 60px rgba(0,0,0,0.55); }
+.quotebox {
+    border-left: 4px solid var(--color-primary); background: var(--color-surface);
+    padding: 20px 26px; border-radius: 0 14px 14px 0; text-align: left; max-width: 840px;
+    font-size: clamp(15px, 2vw, 22px); font-style: italic;
+}
+.chart-container { width: min(84%, 760px); height: clamp(220px, 42vh, 360px); }
+
+/* animations */
+.animate-fade-up { animation: fadeUp 0.6s ease-out forwards; opacity: 0; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+.animate-stagger > * { opacity: 0; animation: fadeUp 0.5s ease-out forwards; }
+.animate-stagger > *:nth-child(1) { animation-delay: 0.05s; }
+.animate-stagger > *:nth-child(2) { animation-delay: 0.15s; }
+.animate-stagger > *:nth-child(3) { animation-delay: 0.25s; }
+.animate-stagger > *:nth-child(4) { animation-delay: 0.35s; }
+.animate-stagger > *:nth-child(5) { animation-delay: 0.45s; }
+.animate-stagger > *:nth-child(6) { animation-delay: 0.55s; }
+
+/* nav */
+.progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--gradient-primary); transition: width 0.3s; z-index: 1000; }
+.nav-controls {
+    position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 20px; z-index: 1000;
+}
+.nav-btn {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); color: #fff;
+    width: 42px; height: 42px; border-radius: 50%; cursor: pointer; font-size: 18px;
+}
+.nav-btn:hover { background: rgba(230,57,70,0.35); }
+.slide-counter { color: var(--color-muted); font-size: 14px; }
+
+@media (max-width: 768px) {
+    .slide { padding: 32px 20px; }
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .split { grid-template-columns: 1fr; gap: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="slide-deck">
+
+<!-- 1 · TITLE -->
+<div class="slide active">
+    <div class="slide-content animate-stagger">
+        <div class="kicker">Today's Project · Built with Claude Code</div>
+        <h1 class="slide-title">NEXT-GEN WARFARE</h1>
+        <p class="sub">An open-source missile knowledge base — researched, structured, illustrated,
+        and documented by <b style="color:var(--color-text)">instructing an AI in plain language</b> instead of building it by hand.</p>
+        <p class="sub" style="font-size:14px">Non-sensitive, public data only · Sources: Wikipedia / CSIS Missile Threat</p>
+    </div>
+</div>
+
+<!-- 2 · THE MISSION -->
+<div class="slide">
+    <div class="slide-content animate-stagger">
+        <div class="kicker">01 · The Mission</div>
+        <h2>One sentence in. <span class="hl">A knowledge base out.</span></h2>
+        <div class="quotebox">"Create a folder called Next-gen-warfare, bring the toughest missiles worldwide,
+        make a knowledge base with sub-categories, fill them, bring pics, make infographics —
+        and add a CLAUDE.md so the AI only uses non-sensitive data."</div>
+        <p class="sub">That was the entire specification. No scripts, no templates, no copy-pasting from websites.</p>
+    </div>
+</div>
+
+<!-- 3 · WHAT WAS BUILT (metrics) -->
+<div class="slide">
+    <div class="slide-content">
+        <div class="kicker">02 · The Deliverable</div>
+        <h2>What landed on disk</h2>
+        <div class="metrics animate-stagger">
+            <div class="metric"><div class="num">24</div><div class="lbl">files created</div></div>
+            <div class="metric"><div class="num">11</div><div class="lbl">missile systems profiled</div></div>
+            <div class="metric"><div class="num">6</div><div class="lbl">national arsenals covered</div></div>
+            <div class="metric"><div class="num">9+2</div><div class="lbl">photos + custom infographics</div></div>
+        </div>
+        <p class="sub">Plus 5 weapon-class explainers, a cross-linked index, cited sources on every page —
+        and one rule file that governs it all.</p>
+    </div>
+</div>
+
+<!-- 4 · STRUCTURE -->
+<div class="slide">
+    <div class="slide-content">
+        <div class="kicker">03 · The Architecture</div>
+        <h2>Organized like a real wiki</h2>
+        <pre class="tree animate-fade-up">
+Next-gen-warfare/
+├── <span class="dir">CLAUDE.md</span>            <span class="comment">← rules the AI must follow</span>
+├── <span class="dir">README.md</span>            <span class="comment">← entry point & navigation</span>
+├── <span class="dir">inventory/</span>           <span class="comment">← 11 missile profiles + index</span>
+│     rs-28-sarmat.md · df-41.md · trident-ii-d5.md · zircon.md …
+├── <span class="dir">classes/</span>             <span class="comment">← 5 category deep-dives</span>
+│     ballistic · hypersonic · cruise · anti-ship · air-defense
+├── <span class="dir">armory/</span>              <span class="comment">← 6 country overviews</span>
+│     russia · usa · china · india · north-korea · europe
+├── <span class="dir">assets/</span>
+│     images/ (9 photos) · infographics/ (2 SVG charts)
+└── <span class="dir">presentation/</span>        <span class="comment">← you are here</span></pre>
+    </div>
+</div>
+
+<!-- 5 · CLAUDE.MD RULE -->
+<div class="slide">
+    <div class="slide-content animate-stagger">
+        <div class="kicker">04 · Governance</div>
+        <h2>CLAUDE.md — <span class="hl">"non-sensitive data only"</span></h2>
+        <p class="sub">A single markdown file acts as a standing instruction set for any AI that works in this folder:</p>
+        <ul class="checks">
+            <li><b>Public sources only</b> — encyclopedic facts, cited on every page</li>
+            <li><b>No technical uplift</b> — headline specs, never engineering detail</li>
+            <li><b>Educational framing</b> — a reference wiki, not a manual</li>
+            <li><b>Conventions</b> — naming, structure, and how to add new entries</li>
+        </ul>
+        <p class="sub">The knowledge base carries its own safety policy and style guide — enforcement travels with the folder.</p>
+    </div>
+</div>
+
+<!-- 6 · RANGE INFOGRAPHIC -->
+<div class="slide">
+    <div class="slide-content">
+        <div class="kicker">05 · Sample Content</div>
+        <h2>Custom infographics, drawn as code</h2>
+        <img class="infographic animate-fade-up" src="../assets/infographics/range-comparison.svg" alt="Range comparison chart">
+    </div>
+</div>
+
+<!-- 7 · SPEED INFOGRAPHIC -->
+<div class="slide">
+    <div class="slide-content">
+        <div class="kicker">05 · Sample Content</div>
+        <h2>Speed is a spectrum — <span class="hl">maneuver is the revolution</span></h2>
+        <img class="infographic animate-fade-up" src="../assets/infographics/speed-comparison.svg" alt="Speed comparison chart">
+    </div>
+</div>
+
+<!-- 8 · HOW IT WAS MADE -->
+<div class="slide">
+    <div class="slide-content">
+        <div class="kicker">06 · The Method</div>
+        <h2>How it was actually made</h2>
+        <div class="split animate-stagger">
+            <div class="panel">
+                <h3>What I typed (all of it)</h3>
+                <pre class="term"><span class="prompt">›</span> <span class="said">make a folder "Next-gen-warfare",
+  knowledge base of the toughest
+  missiles worldwide, with
+  sub-categories, pics and
+  infographics. CLAUDE.md rule:
+  non-sensitive data only.</span></pre>
+            </div>
+            <div class="panel">
+                <h3>What the AI did with it</h3>
+                <pre class="term"><span class="comment">1.</span> designed the folder architecture
+<span class="comment">2.</span> wrote 24 cross-linked files
+<span class="comment">3.</span> pulled 9 free-license photos
+   from Wikimedia via API
+<span class="comment">4.</span> drew 2 SVG charts from the data
+<span class="comment">5.</span> built this very presentation</pre>
+            </div>
+        </div>
+        <p class="sub">One conversational instruction → a planned, executed, self-documented project.</p>
+    </div>
+</div>
+
+<!-- 9 · AI VS TERMINAL (table) -->
+<div class="slide">
+    <div class="slide-content">
+        <div class="kicker">07 · The Comparison</div>
+        <h2>Explaining to AI <span class="hl">vs.</span> doing it manually</h2>
+        <table class="vs animate-fade-up">
+            <tr><th>Task</th><th>Manual (terminal + browser)</th><th>With AI</th></tr>
+            <tr><td>Create structure</td><td class="lose">mkdir × 7, touch × 24, by hand</td><td class="win">described in one sentence</td></tr>
+            <tr><td>Research 11 missiles</td><td class="lose">hours of reading & note-taking</td><td class="win">drafted with sources cited</td></tr>
+            <tr><td>Find licensed images</td><td class="lose">search, check licenses, download each</td><td class="win">fetched via Wikimedia API</td></tr>
+            <tr><td>Make infographics</td><td class="lose">learn a design tool</td><td class="win">generated as SVG code</td></tr>
+            <tr><td>Keep it consistent</td><td class="lose">discipline & memory</td><td class="win">CLAUDE.md enforces the rules</td></tr>
+            <tr><td>Build presentation</td><td class="lose">another tool, another evening</td><td class="win">same conversation</td></tr>
+        </table>
+    </div>
+</div>
+
+<!-- 10 · TIME CHART -->
+<div class="slide">
+    <div class="slide-content">
+        <div class="kicker">07 · The Comparison</div>
+        <h2>Estimated effort, honestly</h2>
+        <div class="chart-container animate-fade-up"><canvas id="timeChart"></canvas></div>
+        <p class="sub">Estimated hands-on time for a project of this scope. The human's job shifts from
+        <b style="color:var(--color-muted)">typing every command</b> to <b style="color:var(--color-accent)">describing intent and reviewing results</b>.</p>
+    </div>
+</div>
+
+<!-- 11 · CLOSING -->
+<div class="slide">
+    <div class="slide-content animate-stagger">
+        <div class="kicker">08 · Takeaway</div>
+        <h1 class="slide-title" style="font-size:clamp(28px,4.5vw,60px)">Natural language is the new command line.</h1>
+        <ul class="checks">
+            <li>The <b>terminal executes commands</b> — you must already know every step</li>
+            <li>The <b>AI executes intent</b> — it plans the steps, you steer and verify</li>
+            <li>Rules-as-files (<b>CLAUDE.md</b>) make the output governed and repeatable</li>
+        </ul>
+        <p class="sub">Next step: push this knowledge base to GitHub so it lives alongside the code that explains it.</p>
+        <p class="sub" style="font-size:13px">Navigate: ← → keys, click, or the buttons below · Built 2026-07-02</p>
+    </div>
+</div>
+
+</div>
+
+<div class="nav-controls">
+    <button class="nav-btn" onclick="prevSlide(event)">←</button>
+    <span class="slide-counter"><span id="current">1</span> / <span id="total">11</span></span>
+    <button class="nav-btn" onclick="nextSlide(event)">→</button>
+</div>
+
+<script>
+let current = 1;
+const total = document.querySelectorAll('.slide').length;
+document.getElementById('total').textContent = total;
+function showSlide(n) {
+    if (n < 1) n = 1;
+    if (n > total) n = total;
+    current = n;
+    document.querySelectorAll('.slide').forEach((s, i) => s.classList.toggle('active', i === n - 1));
+    document.getElementById('current').textContent = n;
+    document.getElementById('progressBar').style.width = (n / total * 100) + '%';
+}
+function nextSlide(e) { if (e) e.stopPropagation(); showSlide(current + 1); }
+function prevSlide(e) { if (e) e.stopPropagation(); showSlide(current - 1); }
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+});
+document.addEventListener('click', (e) => { if (!e.target.closest('.nav-controls')) nextSlide(); });
+
+new Chart(document.getElementById('timeChart'), {
+    type: 'bar',
+    data: {
+        labels: ['Structure & files', 'Research & writing', 'Images', 'Infographics', 'Presentation'],
+        datasets: [
+            { label: 'Manual (hours)', data: [1, 6, 1.5, 2, 3], backgroundColor: 'rgba(141,153,174,0.45)', borderRadius: 6 },
+            { label: 'Instructing AI (hours)', data: [0.05, 0.3, 0.05, 0.1, 0.1], backgroundColor: 'rgba(230,57,70,0.9)', borderRadius: 6 }
+        ]
+    },
+    options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#f1faee' } } },
+        scales: {
+            x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8d99ae' } },
+            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8d99ae' }, title: { display: true, text: 'hours', color: '#8d99ae' } }
+        }
+    }
+});
+showSlide(1);
+</script>
+</body>
+</html>
