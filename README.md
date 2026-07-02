@@ -11,7 +11,10 @@
 | [**Classes**](classes/) | Weapon categories explained: how each type flies, strikes, and is countered |
 | [**Armory**](armory/) | Country-by-country arsenal overviews |
 | [**Infographics**](assets/infographics/) | Custom charts comparing range and speed |
+| [**Templates**](templates/) | Skeletons for new inventory/armory entries — never start from blank |
 | [**Presentation**](presentation/index.html) | Slide deck presenting this project |
+
+> 🧭 Every page carries YAML frontmatter (`type`, `class`, `country`, `range_km`, `status`, `tags`, `related` wikilinks) so both humans and AI can filter and navigate. New entries: use the `add-missile-entry` skill or copy a template. Rules in [CLAUDE.md](CLAUDE.md).
 
 ## 🗂 Classes
 
